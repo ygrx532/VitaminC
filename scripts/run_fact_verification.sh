@@ -1,14 +1,14 @@
 #! /bin/bash
 #SBATCH --verbose
-#SBATCH --partition gpu
-#SBATCH --job-name fever-t
+#SBATCH --partition sci
+#SBATCH --job-name VitaminC
 #SBATCH --time=168:00:00
 #SBATCH --nodes=1
 #SBATCH --mem=128GB
 #SBATCH --mail-type=ALL # select which email types will be sent
 #SBATCH --mail-user=yx2433@nyu.edu
 #SBATCH --gres=gpu:1
-#SBATCH --nodelist=gpu7
+##SBATCH --nodelist=gpu7
 
 #SBATCH --array=1
 #SBATCH --output=sbl_%A_%a.out # %A is SLURM_ARRAY_JOB_ID, %a is SLURM_ARRAY_TASK_ID
@@ -31,6 +31,7 @@ echo ${SLURM_ARRAY_TASK_ID}
 
 set -ex
 
+HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
 python scripts/fact_verification.py \
   --model_name_or_path /gpfsnyu/home/yx2433/transformers/models/albert-base-v2 \
   --tasks_names vitaminc \
